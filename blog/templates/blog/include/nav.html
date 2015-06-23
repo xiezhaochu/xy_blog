@@ -1,0 +1,94 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav col-sm-offset-4">
+                <li><a href= "/">首页</a></li>
+            </ul>
+                {% if user.is_authenticated %}
+                <ul class="nav navbar-nav navbar-right col-sm-1">
+                <li><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="butten" aria-expanded="false">{{user.username}}<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="{%url 'UserControl' 'logout'%}">注销</a></li>
+                    </ul>
+                </li>
+                {% else %}
+                <ul class="nav navbar-nav navbar-right col-sm-2">
+                <li><a id="nav-login" data-toggle="modal" data-target="#login-modal">登录</a></li>
+                <li><a id="nav-register" data-toggle="modal" data-target="#register-modal">注册</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="modal fade" role="dialog" aria-labelledby="modaltitle" aria-hidden="true" tabindex="-1" id="login-modal">
+    <div class="modal-dialog min-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modaltitle">用户登录</h4>
+            </div>
+            <div class="modal-body clearfix">
+                <form class="form-horizontal" method="post" role="form" action="/u/login">
+                    {% csrf_token %}
+                    <div class="form-group">
+                    <label class="col-sm-3 control-label">用户名</label>
+                    <div class="col-sm-7">
+                    <input type="text" class="form-control" id="login-username" name="username"/>
+                    </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">密&nbsp;&nbsp;&nbsp;码</label>
+                        <div class="col-sm-7">
+                            <input type="password" class="form-control" name="password"/>
+                        </div>
+                    </div>
+                    <div class="cent">
+                        <button class="btn btn-primary" type="submit">登录</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" role="dialog" aria-labeledby="modaltitle" aria-hidden="true" table="-1" id="register-modal">
+    <div class ="modal-dialog min-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">用户注册</h4>
+            </div>
+            <div class="modal-body clearfix">
+                <form class="form-horizontal" method="post" role="form" action="/u/register">
+                {%csrf_token%}
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">用&nbsp;户&nbsp;名&nbsp;</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="username"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码&nbsp;</label>
+                        <div class="col-sm-7">
+                            <input type="password" name="password1" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">确认密码</label>
+                        <div class="col-sm-7">
+                            <input type="password" class="form-control" name="password2"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                    <label class="col-sm-3 control-label">电子邮箱</label>
+                    <div class="col-sm-7">
+                    <input type="email" class="form-control" name="email"/>
+                    </div>
+                    </div>
+                    <div class="cent">
+                        <button type="submit" class="btn btn-primary">注册</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>  

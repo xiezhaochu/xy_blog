@@ -1,0 +1,10 @@
+body{
+    background-image:url(/static/pic/1.jpg);
+    padding-top:50px;
+}
+.cent{
+    text-align:center;
+}
+.min-dialog{
+    width:500px;
+}
