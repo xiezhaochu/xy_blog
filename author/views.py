@@ -26,11 +26,13 @@ class UserControl(View):
         errors = []
         if newuser.is_valid():
             newuser.save()
-            return HttpResponse(u"注册成功")
+            username = request.POST.get("username","")
+            password = request.POST.get("password1","")
+            user = auth.authenticate(username=username, password=password)
+            auth.login(request,user)
         else:
             for k,v in newuser.errors.items():
                 errors.append(v.as_text())
-
         mydict = {"errors":errors}
         return HttpResponse(json.dumps(mydict),content_type="application/json")
 
@@ -38,11 +40,13 @@ class UserControl(View):
         username = request.POST.get("username","")
         password = request.POST.get("password","")
         user = auth.authenticate(username=username, password=password)
+        errors = []
         if user is not None:
-            user = auth.login(request,user)
-            return HttpResponseRedirect("/")
+            auth.login(request,user)
         else:
-            return HttpResponse(u"密码错误")
+            errors.append("用户名或密码错误")
+        mydict = {"errors":errors}
+        return HttpResponse(json.dumps(mydict), content_type="application/json")
 
     def logout(self, request):
         auth.logout(request)
