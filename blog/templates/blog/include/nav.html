@@ -87,7 +87,7 @@
                     $("#login-modal").modal("hide");
                 }
                 else{
-                    html = "<div class=\"alert alert-danger\">";
+                    html = "<div class=\"alert alert-danger\" id=\"errorinfo\">";
                     for(i in errors){
                         html += errors[i] + ",";
                     }
@@ -116,7 +116,7 @@
                     $("#register-modal").modal("hide");
                 }
                 else{
-                    html = "<div class=\"alert alert-danger\">"
+                    html = "<div class=\"alert alert-danger\" id=\"errorinfo\">"
                     for(i in errors){
                         html += errors[i] + ",";
                     }
@@ -126,8 +126,23 @@
             },
             error:function(XMLHttpRequest,textStatus,errorThrown){
                 alert(XMLHttpRequest,responseText);
-            }
+            },
         })
         return false;
+    })
+    $("#navbar").on("click","#logout",function(){
+        $.ajax({
+            type:"get",
+            url:"/u/logout",
+            success:function(data,status){
+                $("#login-form").trigger("reset");
+                $("#register-form").trigger("reset");
+                $("#errorinfo").remove();
+                $("#navbar").load("/p/navbar");
+            },
+            error:function(XMLHttpRequest,textStatus,errorThrown){
+                alert(XMLHttpRequest,responseText);
+            },
+        })
     })
 </script>

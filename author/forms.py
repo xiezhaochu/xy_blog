@@ -2,6 +2,7 @@
 from django.forms import ModelForm
 from author.models import XyUser
 from django import forms
+from django.contrib.auth.models import Group
 
 class XyUserCreationForm(ModelForm):
     error_messages = {
@@ -22,7 +23,6 @@ class XyUserCreationForm(ModelForm):
     password2 = forms.CharField(widget=forms.PasswordInput,
             error_messages={
                 'requird':u"确认密码未填写"})
-
     class Meta:
         model = XyUser
         fields = ("username", "email")
@@ -60,4 +60,6 @@ class XyUserCreationForm(ModelForm):
         user.set_password(self.cleaned_data['password1'])
         if commit:
             user.save()
+            group = Group.objects.get(name="normal")
+            user.groups.add(group)
         return user
