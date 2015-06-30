@@ -85,6 +85,7 @@ DATABASES = {
         'USER':'root',
         'PASSWORD':'huangwen',
         'PORT':'3306',
+        'charset':'utf8',
     }
 }
 

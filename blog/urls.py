@@ -3,4 +3,6 @@ from blog.views import *
 urlpatterns = [
     url(r'^$',IndexView.as_view(),name="index"),
     url(r'^p/(?P<op>\w+)$',PartView.as_view(),name="part"),
+    url(r'^edit/$',EditView.as_view(), name="edit"),
+    url(r'^a/(?P<op>\w+)$',ArticleView.as_view(),name="article"),
 ]

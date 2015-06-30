@@ -8,3 +8,6 @@ body{
 .min-dialog{
     width:500px;
 }
+#main{
+	background-color: white;
+}

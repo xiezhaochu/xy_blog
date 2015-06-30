@@ -15,13 +15,13 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Article',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False, verbose_name='ID', auto_created=True)),
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True, serialize=False)),
                 ('title', models.CharField(max_length=50)),
-                ('tags', models.CharField(null=True, blank=True, max_length=100)),
+                ('tags', models.CharField(max_length=100, null=True, blank=True)),
                 ('content', models.TextField()),
                 ('create_time', models.DateTimeField(auto_now_add=True)),
                 ('update_time', models.DateTimeField(auto_now=True)),
-                ('status', models.IntegerField(choices=[(0, '发布'), (1, '草稿'), (2, '删除')], default=0)),
+                ('status', models.IntegerField(default=0, choices=[(0, '发布'), (1, '草稿'), (2, '删除')])),
                 ('author', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
             options={
