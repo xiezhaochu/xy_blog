@@ -60,6 +60,4 @@ class XyUserCreationForm(ModelForm):
         user.set_password(self.cleaned_data['password1'])
         if commit:
             user.save()
-            group = Group.objects.get(name="normal")
-            user.groups.add(group)
         return user
