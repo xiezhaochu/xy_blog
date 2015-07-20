@@ -1,3 +1,11 @@
-{%extends "./blog/include/base.html" %}
-{%block main%}1
-<br/>1<br/>1{%endblock%}
+{%extends "blog/include/base.html" %}
+{%block main%}
+<div class="white_bg">
+{%for article in article_list %}
+<a href="/detail/{{article.id}}">{{article.title}}</a><br/>
+{%endfor%}
+{%for i in paginator.page_range%}
+<a href="?page={{i}}">{{i}}</a>
+{%endfor%}
+</div>
+{%endblock%}

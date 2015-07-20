@@ -1,0 +1,16 @@
+{% extends "blog/include/base.html" %}
+{%block title%}修改文章{%endblock%}
+{%block css_js%}
+<script src="/static/js/xheditor-1.2.2.min.js"></script>
+<script src="/static/js/xheditor_lang/zh-cn.js"></script>
+{%endblock%}
+{%block main%}
+<form method="post" action="/a/update/{{article.id}}">
+{%csrf_token%}
+<div class="white_bg">
+文章标题:<input type="text" class="width_max" name="title" value="{{article.title}}"/><br/><br/>
+文章内容:<textarea name="content" class="xheditor">{{article.content}}</textarea>
+<input type="submit" value="提交"/>
+</div>
+</form>
+{%endblock%}

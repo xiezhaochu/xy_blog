@@ -1,0 +1,9 @@
+{%extends "blog/include/base.html" %}
+{%block title%}{{article.title}}{%endblock%}
+{%block main %}
+<div class="white_bg">
+<p class="title">{{article.title}}</p>
+<hr/>
+<p>{{article.content|safe}}</p>
+</div>
+{%endblock%}

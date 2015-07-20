@@ -75,7 +75,7 @@
     $("#login-form").submit(function(){
         $.ajax({
             type:"POST",
-            url:"/u/login",
+            url:"/user/login",
             data:{"username":$("#login-username").val(),"password":$("#login-password").val()},
             beforeSend:function(xhr){
                 xhr.setRequestHeader("X-CSRFToken",$.cookie('csrftoken'));
@@ -83,7 +83,7 @@
             success:function(data,status){
                 var errors = data["errors"]
                 if(errors.length==0){
-                    $("#navbar").load("/p/navbar");
+                    $("#navbar").load("/part/navbar");
                     $("#login-modal").modal("hide");
                 }
                 else{
@@ -104,7 +104,7 @@
     $("#register-form").submit(function(){
         $.ajax({
             type:"POST",
-            url:"u/register",
+            url:"user/register",
             data:{"username":$("#register-username").val(),"password1":$("#password1").val(),"password2":$("#password2").val(),"email":$("#email").val()},
             beforeSend:function(xhr){
                 xhr.setRequestHeader("X-CSRFToken",$.cookie('csrftoken'));
@@ -112,7 +112,7 @@
             success:function(data,status){
                 var errors = data["errors"]
                 if(errors.length==0){
-                    $("#navbar").load("/p/navbar");
+                    $("#navbar").load("/part/navbar");
                     $("#register-modal").modal("hide");
                 }
                 else{
@@ -133,12 +133,12 @@
     $("#navbar").on("click","#logout",function(){
         $.ajax({
             type:"get",
-            url:"/u/logout",
+            url:"/user/logout",
             success:function(data,status){
                 $("#login-form").trigger("reset");
                 $("#register-form").trigger("reset");
                 $("#errorinfo").remove();
-                $("#navbar").load("/p/navbar");
+                $("#navbar").load("/part/navbar");
             },
             error:function(XMLHttpRequest,textStatus,errorThrown){
                 alert(XMLHttpRequest,responseText);

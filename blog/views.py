@@ -1,5 +1,5 @@
-from django.shortcuts import render_to_response, RequestContext
-from django.views.generic import View, DetailView
+from django.shortcuts import render_to_response, RequestContext, get_object_or_404, render
+from django.views import generic
 from django.http import HttpResponse
 from blog.models import Article
 from blog.forms import ArticleCreationForm
@@ -8,11 +8,13 @@ from django.contrib.auth.decorators import permission_required
 from django.utils.decorators import method_decorator
 import json
 
-class IndexView(View):
-    def get(self,request):
-        return render_to_response('blog/index.html', context_instance=RequestContext(request))
+class Index(generic.ListView):
+    context_object_name = "article_list"
+    template_name = "blog/index.html"
+    model = Article
+    paginate_by = 2
 
-class PartView(View):
+class Part(generic.View):
     def get(self, request, *args, **kwargs):
         op = self.kwargs.get('op')
         if op == 'navbar':
@@ -21,26 +23,48 @@ class PartView(View):
     def navbar(self,request):
         return render_to_response('blog/include/navbar.html', context_instance=RequestContext(request))
 
-class ArticleView(View):
+class ArticleControl(generic.View):
     def post(self,request, *args, **kwargs):
         op = self.kwargs.get('op')
-        if op == 'add':
-            return self.add(request)
+        if op == 'create':
+            return self.create(request)
+        if op == 'update':
+            return self.update(request, **kwargs)
     
     @method_decorator(permission_required('blog.add_article'))
-    def add(self,request):
-        new = ArticleCreationForm(request.POST, user=request.user)
+    def create(self, request):
+        form = ArticleCreationForm(request.POST, user=request.user)
         errors = []
-        if new.is_valid():
-            new.save()
+        if form.is_valid():
+            form.save()
             return HttpResponse("发布成功")
         else:
-            for k,v in new.errors.items():
+            for k,v in form.errors.items():
+                errors.append(v)
+            mydict = {"errors":errors}
+            return HttpResponse(json.dumps(mydict),content_type="application/json")
+    
+    def update(self,request, **kwargs):
+        id = kwargs.get('id')
+        article = get_object_or_404(Article, pk= id)
+        form = ArticleCreationForm(request.POST, instance=article, user=article.author)
+        if form.is_valid():
+            form.save()
+            return HttpResponse("修改成功")
+        else:
+            for k,v in form.errors.items():
                 errors.append(v)
             mydict = {"errors":errors}
             return HttpResponse(json.dumps(mydict),content_type="application/json")
 
+class Detail(generic.DetailView):
+    model = Article
 
-class EditView(View):
-    def get(self, request):
-        return render_to_response('blog/edit.html', context_instance=RequestContext(request))
+class Edit(generic.View):
+    def get(self, request, *args, **kwargs):
+        id = kwargs.get("id")
+        if id != "":
+            article = get_object_or_404(Article, pk=id)
+            return render(request, 'blog/edit_update.html', {"article":article})
+        else:
+            return render_to_response('blog/edit_create.html', context_instance=RequestContext(request))
